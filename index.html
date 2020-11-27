@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+   body{
+    background-image:url(./images/背景.jpg) ;
+   }
+
+
+      #box {
+        display:flex;
+    align-items:center;
+    justify-content:center;
+    height:850px; 
+      }
+      #game {
+        width: 800px;
+       
+      }
+      .card {
+        width: 180px;
+        height: 140px;
+        transform-style: preserve-3d;
+        position: relative;
+        transition: all 0.5s;
+        display: inline-block;
+      }
+      .close {
+        transform: rotateY(180deg);
+      }
+      .front {
+        width: 100%;
+        height: 100%;
+
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: absolute;
+      }
+      .back {
+        width: 100%;
+        height: 100%;
+        background-image: url(./images/熊掌背面.png);
+        background-size: 150px;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: absolute;
+        transform: rotateY(180deg);
+      }
+    
+      .button{
+        position: absolute;
+        top: 700px;
+      }
+      #playbtn{
+        position: absolute;
+        /* background-color: blue; */
+        width: 100px;
+        height: 100px;
+        left: 100px;
+        top:100px
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <div id="content"></div>
+      <div id="game"></div>
+
+      <!-- <audio id="audio" src="music/Calimba - E's Jammy Jams.mp3" autoplay="autoplay" loop="loop" ></audio>
+<input type="button" onclick="playOrPause()" id="playbtn"></input> -->
+    </div>
+
+    <!-- <button onclick="window.location.href='game.html'" type="button" class="btn btn-lg btn-primary">進入遊戲</button> -->
+<!-- <div class="button">
+    <input type="button" value="開始遊戲" id="start">
+</div> -->
+    <script src="./jquery-3.5.1.min.js"></script>
+    <script>
+
+//       $("content").style.display="block";
+// $("start").click
+      // document.getElementById("content").style.display="block";
+      // document.getElementById("content").style.display="none";
+
+
+
+      const totalCards = 16;
+
+      for (let i = 0; i < totalCards; i++) {
+        $("#game").append(`
+    <div class="card close"> 
+    <div class="back"></div>
+    <div class="front"></div>
+   
+    </div>
+    `);
+        const number = (i % (totalCards / 2)) + 1;
+        $(".card").eq(i).find(".front").css("background-image", `url(./bearscards/${number}a.png)`);
+        $(".card").eq(i).attr("data-card", number);
+
+        const target = Math.floor(Math.random() * 16);
+        $(".card").eq(target).insertAfter($(".card").eq(i));
+      }
+      $("#game").on("click", ".card", function () {
+        if ($(".card:not(.close)").length < 2) {
+          $(this).removeClass("close");
+        }
+        if ($(".card:not(.close)").length == 2) {
+          if ($(".card:not(.close)").eq(0).attr("data-card") == $(".card:not(.close)").eq(1).attr("data-card")) {
+            $(".card:not(.close)").fadeTo(800, 0).addClass("clear");
+          }
+          setTimeout(() => {
+            $(".card:not(.close").addClass("close");
+          }, 1000);
+        }
+        if ($(".clear").length == totalCards) {
+          setTimeout(() => {
+            alert("過關");
+          }, 1000);
+        }
+      });
+
+
+      //音訊播放與暫停
+function playOrPause(){
+ var audio = document.getElementById("audio");
+ if(audio.paused){
+ audio.play ();
+document.getElementById("playbtn").style.backgroundImage = "url(images/music.png)";
+ }else if(audio.played){
+  audio.pause();
+ document.getElementById("playbtn").style.backgroundImage = "url(images/music.png)";
+ }
+ }
+    </script>
+  </body>
+</html>
